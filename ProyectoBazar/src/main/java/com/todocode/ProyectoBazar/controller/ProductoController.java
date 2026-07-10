@@ -46,4 +46,12 @@ public class ProductoController {
     public ResponseEntity<ProductoDTO> editarProducto(@PathVariable Long codigo_producto, @RequestBody ProductoDTO productoDTO) {
         return ResponseEntity.ok(productoService.updateProducto(codigo_producto, productoDTO));
     }
+
+    @GetMapping("/falta_stock")
+    public ResponseEntity<List<ProductoDTO>> traerFaltaStock() {
+        List<ProductoDTO> listaProductos = productoService.findAllProductos();
+        List<ProductoDTO> bajoStock = listaProductos.stream()
+                .filter(producto -> producto.getCantidad() <= 5).toList();
+        return ResponseEntity.ok(bajoStock);
+    }
 }
